@@ -11,6 +11,8 @@ import (
 )
 
 func AllowedKey(key string) bool {
+	// I would use JWT with an expiry date set to the amount the users paid already
+	// Infura has JWT suport
 	return key == "b1946ac92492d2347c6235b4d2611184"
 }
 
@@ -34,6 +36,5 @@ func main() {
 	router := httprouter.New()
 	router.GET("/", Index)
 	router.POST("/archive/:key", Protected)
-
 	log.Fatal(http.ListenAndServe(":8081", router))
 }
