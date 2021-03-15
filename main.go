@@ -29,12 +29,15 @@ func Protected(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	httputil.NewSingleHostReverseProxy(target)
+	fmt.Printf("Received request from: %s\n", r.RemoteAddr)
+	proxy := httputil.NewSingleHostReverseProxy(target)
+	proxy.ServeHTTP(w, r)
 }
 
 func main() {
 	router := httprouter.New()
 	router.GET("/", Index)
 	router.POST("/archive/:key", Protected)
+	fmt.Println("Starting...")
 	log.Fatal(http.ListenAndServe(":8081", router))
 }
